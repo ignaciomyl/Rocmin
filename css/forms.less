@@ -1,0 +1,197 @@
+/*
+My take on pure CSS material design inputs and drop-down
+Influenced heavily by: https://codepen.io/sevilayha/pen/IdGKH
+*/
+/*
+A dropdown menu that covers the content
+Note: MUST be placed inside a relative position element (works with .material-form-field)
+Expected html:
+<ul class="material-dropdown">
+<li>Item 1</li>
+<li>Item 2</li>
+<li>Item 3</li>
+...
+</ul>
+*/
+.material-dropdown {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  background: #FFFFFF;
+  color: #000000;
+  z-index: 1000;
+  transition: 0.2s ease-in height, step-end box-shadow 0.2s;
+  -moz-transition: 0.2s ease-in height, step-end box-shadow 0.2s;
+  -webkit-transition: 0.2s ease-in height, step-end box-shadow 0.2s;
+}
+.material-dropdown.material-dropdown-open {
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+}
+.material-dropdown li {
+  padding: 10px;
+  cursor: default;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+.material-dropdown li:hover {
+  background-color: @naranjoMasClaro;
+}
+.material-dropdown li.material-dropdown-selected {
+  background-color: @naranjoClaro;
+}
+
+/*
+A material design form field
+Expects this html (note the required attribute on the input):
+<div class="material-form-field">
+<input type="text" required/>
+<label class="material-form-field-label">Form field title</label>
+</div>
+*/
+.material-form-field {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  position: relative;
+  display: block;
+  color: #000000;
+  padding: 25px 0 10px 0;
+}
+.material-form-field::after {
+  content: "\00A0";
+  display: block;
+  color: #d50000;
+  font-size: 16px;
+  padding-top: 5px;
+}
+.material-form-field .material-form-field-label {
+  position: absolute;
+  display: block;
+  top: 30px;
+  left: 0px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+  pointer-events: none;
+  cursor: text;
+  font-size: 18px;
+  font-weight: normal;
+}
+.material-form-field input {
+  padding: 10px 0 10px 0;
+  display: block;
+  width: 100%;
+  border: none;
+  font-size: 14px;
+  color: #000000;
+  border-bottom: 1px solid #d4d4d4;
+  outline: none;
+}
+.material-form-field input:invalid {
+  outline: none;
+  box-shadow: none;
+}
+.material-form-field input:valid ~ .material-form-field-label, .material-form-field input:focus ~ .material-form-field-label {
+  top: 10px;
+  font-size: 12px;
+  font-weight: normal;
+}
+.material-form-field input:focus {
+  outline: none;
+  color: @naranjo;
+  padding-bottom: 8px;
+  border-bottom-width: 3px;
+  border-bottom-color: @naranjo;
+}
+.material-form-field input:focus ~ .material-form-field-label {
+  color: @naranjo;
+}
+.material-form-field input:focus ~ .material-dropdown {
+  /*
+  If you want to animate this you will need to use some js to calculate it
+  Optionally, you can simply display:block/none
+  */
+  height: 228px;
+  box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.2);
+  transition: 0.2s ease-out height, step-start box-shadow 0.2s;
+  -moz-transition: 0.2s ease-out height, step-start box-shadow 0.2s;
+  -webkit-transition: 0.2s ease-out height, step-start box-shadow 0.2s;
+}
+.material-form-field.material-form-field-invalid {
+  color: #d50000;
+}
+.material-form-field.material-form-field-invalid::after {
+  content: attr(data-validationError);
+}
+.material-form-field.material-form-field-invalid input:focus ~ .material-form-field-label {
+  color: #d50000;
+}
+
+.container {
+  width: 400px;
+  margin: 20px auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+.form-contacto{
+  @media (max-width: 991px){
+    padding: 30px 40px 100px 40px;
+  }
+  @media (min-width: 992px){
+    padding: 50px 300px 100px 300px;
+  }
+  .row{
+    .col-xs-12{
+      button{
+        &.btn{
+          display: block;
+          margin-right: auto;
+          margin-left: auto;
+          padding: 11px 100px;
+        }
+      }
+    }
+  }
+}
+.md-input {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    height: 34px;
+    padding: 2px;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid rgba(160,160,160,0.2);
+    border-radius: 0;
+    box-shadow: none;
+}
+.md-input:focus,
+.md-input.focus,{
+  padding-bottom: 1px;
+  border-color: @naranjo;
+  border-bottom-width: 2px;
+}
+
+.md-input:focus ~ label,
+.md-input.focus ~ label,
+textarea:valid ~ .material-form-field-label {
+  top: 0 !important;
+  font-size: 14px;
+  color: #000000;
+}
+
+.md-input.disabled,
+.md-input[disabled] {
+  opacity: 0.5;
+}
+
+textarea.md-input {
+  height: auto;
+}

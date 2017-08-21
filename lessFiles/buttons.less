@@ -1,0 +1,41 @@
+.btn {
+    display: inline-block;
+    padding: 11px 22px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 0;
+    border-radius: 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+    &.btn-rounded{
+      border-radius: 100%;
+      width: 60px;
+      height: 60px;
+    }
+    &.btn-orange{
+      background-color: @naranjo;
+      color: @blanco;
+    }
+    &.btn-turquoise{
+      background-color: @turquesa;
+      color: @blanco;
+    }
+    &.btn-black{
+      background-color: @negro;
+      color: @blanco;
+    }
+}
