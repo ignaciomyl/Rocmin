@@ -9,7 +9,15 @@
   <link rel="stylesheet" href="css/estilos.css">
   <link rel="shortcut icon" href="favicon/favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon/favicon.ico" type="image/x-icon">
+  <script type="text/javascript">
+    function seleccion(item)
+    {
+      document.getElementById('field-dropDown').value = item;
+    }
+
+  </script>
   <script src='https://www.google.com/recaptcha/api.js'></script>
+
 </head>
 <body>
   <!-- navbar -->
@@ -93,13 +101,12 @@
           <div class="material-form-field">
             <input type="text" required name="dropDown" id="field-dropDown"/>
             <label class="material-form-field-label" for="field-dropDown">Seleccione cargo*</label>
-            <ul class="material-dropdown">
-              <li>Item 1</li>
-              <li>Item 2</li>
-              <li>Item 3</li>
-              <li>Item 4</li>
-              <li>Item 5</li>
-              <li>Item 6</li>
+            <ul class="material-dropdown" >
+              <li onclick="seleccion('Item 1')">Item 1</li>
+              <li onclick="seleccion('Item 2')">Item 2</li>
+              <li onclick="seleccion('Item 3')">Item 3</li>
+              <li onclick="seleccion('Item 4')">Item 4</li>
+              <li onclick="seleccion('Item 5')">Item 5</li>
             </ul>
           </div>
         </div>
@@ -129,7 +136,7 @@
         </div>
       </div>
     </div>
-    
+
     </form>
     <div class="push"></div>
   </div>
