@@ -149,7 +149,7 @@
             <a href="services.html">Servicios</a>
           </li>
           <li>
-            <a href="workWithUs.html">Trabaja con nosotros</a>
+            <a href="workWithUs.php">Trabaja con nosotros</a>
           </li>
           <li>
             <a href="#" class="nactive">Contacto</a>
@@ -175,32 +175,32 @@
     </header>
 
     <!-- formulario contacto -->
-    <form action="">
+    <form action="enviar.php" method="POST" id="contacto" name="formulario">
     <div class="container-fluid form-contacto">
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="text" required name="text" id="nombre" required/>
+            <input type="text" required name="nombre" id="nombre" required/>
             <label class="material-form-field-label" for="nombre">Nombre Completo*</label>
           </div>
         </div>
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="tel" required name="text" id="tel" required/>
-            <label class="material-form-field-label" for="tel">Teléfono*</label>
+            <input type="tel" required name="telefono" id="telefono" required/>
+            <label class="material-form-field-label" for="telefono">Teléfono*</label>
           </div>
         </div>
         </div>
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="email" required name="text" id="email" required/>
+            <input type="email" required name="email" id="email" required/>
             <label class="material-form-field-label" for="email">Email*</label>
           </div>
         </div>
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="text" required name="text" id="asunto" required/>
+            <input type="text" required name="asunto" id="asunto" required/>
             <label class="material-form-field-label" for="asunto">Asunto*</label>
           </div>
         </div>
@@ -208,7 +208,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="form-group-text">
-            <textarea required="required"></textarea>
+            <textarea id="mensaje" name="mensaje"required="required"></textarea>
             <label class="control-label" for="textarea">Mensaje*</label><i class="bar"></i>
           </div>
         </div>
@@ -218,13 +218,25 @@
             <div class="g-recaptcha" data-sitekey="6LcAJS0UAAAAAKSXdRLCT4uj12iOCgNGRuOpOrSe" style="width:305px;display:block;margin:auto;"></div>
         </div>
       </div>
+    </form>
       <div class="row">
         <div class="col-xs-12">
-          <button class="btn btn-orange">Envíar</button>
+          <button class="btn btn-orange" onclick="validar()">Envíar</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-5 m-t">
+          <?php
+           if (isset($_GET['res'])){
+              if ($_GET['res']=='ok'){ ?> <div class="alert alert-success" role="alert">Tu mensaje ha sido enviado con éxito. ¡En breve nos contactaremos contigo! </div> <?php }
+              if ($_GET['res']=='err'){ ?> <div class="alert alert-error" role="alert">Ha ocurrido un error al enviar tu mensaje, por favor intenta más tarde.</div> <?php }
+              if ($_GET['res']=='recap'){ ?> <div class="alert alert-error" role="alert">No ha pasado la validacion de Recaptcha.</div> <?php }
+
+           }
+          ?>
         </div>
       </div>
     </div>
-    </form>
     <div class="push"></div>
   </div>
 
@@ -252,5 +264,49 @@
   <script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
   <script src="js/index.js"></script>
+  <script type="text/javascript">
+    function validar() {
+        //validar nombre
+        if (document.formulario.nombre.value.length==0) {
+            alert("Ingrese su nombre");
+            document.formulario.nombre.focus();
+            return 0;
+        }
+        //Validar telefono
+        if (document.formulario.telefono.value.length==0) {
+            alert("Ingrese su teléfono");
+            document.formulario.telefono.focus();
+            return 0;
+        }
+        //validar correo
+        if (document.formulario.email.value.length==0) {
+            alert("Ingrese su correo");
+            document.formulario.email.focus();
+            return 0;
+        }else{
+            var patron = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,10})$/;
+            if (!patron.test(document.formulario.email.value)) {
+                alert("Correo no válido por favor ingresar nuevamente");
+                document.formulario.email.focus();
+                return 0;
+            }
+        }
+        //Validar asunto
+        if (document.formulario.asunto.value.length==0) {
+            alert("Ingrese su asunto");
+            document.formulario.asunto.focus();
+            return 0;
+        }
+        //Validar mensaje
+        if (document.formulario.mensaje.value.length==0) {
+            alert("Ingrese su mensaje");
+            document.formulario.mensaje.focus();
+            return 0;
+        }
+        document.formulario.submit();
+    }
+
+  </script>
+
 </body>
 </html>

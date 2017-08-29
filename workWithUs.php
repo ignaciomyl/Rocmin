@@ -9,13 +9,6 @@
   <link rel="stylesheet" href="css/estilos.css">
   <link rel="shortcut icon" href="favicon/favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon/favicon.ico" type="image/x-icon">
-  <script type="text/javascript">
-    function seleccion(item)
-    {
-      document.getElementById('field-dropDown').value = item;
-    }
-
-  </script>
   <script src='https://www.google.com/recaptcha/api.js'></script>
 
 </head>
@@ -51,7 +44,7 @@
             <a href="#" class="nactive">Trabaja con nosotros</a>
           </li>
           <li>
-            <a href="contact.html">Contacto</a>
+            <a href="contact.php">Contacto</a>
           </li>
           <li>
             <a href="#">ENG</a>
@@ -74,33 +67,33 @@
     </header>
 
     <!-- formulario contacto -->
-    <form action="">
+    <form action="enviarTrabaja.php" method="post" id="contactoTrabaja" enctype="multipart/form-data">
     <div class="container-fluid form-contacto">
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="text" required name="text" id="field-text"/>
-            <label class="material-form-field-label" for="field-text">Nombre Completo*</label>
+            <input type="text" required name="nombre" id="nombre"/>
+            <label class="material-form-field-label" for="nombre">Nombre Completo*</label>
           </div>
         </div>
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="tel" required name="text" id="field-text"/>
-            <label class="material-form-field-label" for="field-text">Teléfono*</label>
+            <input type="tel" required name="telefono" id="telefono"/>
+            <label class="material-form-field-label" for="telefono">Teléfono*</label>
           </div>
         </div>
         </div>
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="email" required name="text" id="field-text"/>
-            <label class="material-form-field-label" for="field-text">Email*</label>
+            <input type="email" required name="email" id="email"/>
+            <label class="material-form-field-label" for="email">Email*</label>
           </div>
         </div>
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="text" required name="dropDown" id="field-dropDown"/>
-            <label class="material-form-field-label" for="field-dropDown">Seleccione cargo*</label>
+            <input type="text" required name="cargo" id="cargo"/>
+            <label class="material-form-field-label" for="cargo">Seleccione cargo*</label>
             <ul class="material-dropdown" >
               <li onclick="seleccion('Item 1')">Item 1</li>
               <li onclick="seleccion('Item 2')">Item 2</li>
@@ -114,30 +107,42 @@
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="file" required name="text" id="field-text"/>
-            <label class="material-form-field-label" for="field-text" style="top:0;">Adjuntar CV</label>
+            <input type="file" required name="cv[]" id="cv"/>
+            <label class="material-form-field-label" for="cv" style="top:0;">Adjuntar CV</label>
           </div>
         </div>
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="text" required name="text" id="field-text"/>
-            <label class="material-form-field-label" for="field-text">Perfil de LinkedIn</label>
+            <input type="text" required name="perfil" id="perfil"/>
+            <label class="material-form-field-label" for="perfil">Perfil de LinkedIn</label>
           </div>
         </div>
       </div>
       <div class="row">
-          <div class="col-xs-12 m-b-lg">
-              <div class="g-recaptcha" data-sitekey="6LcAJS0UAAAAAKSXdRLCT4uj12iOCgNGRuOpOrSe" style="width:305px;display:block;margin:auto;"></div>
-          </div>
+        <div class="col-xs-12 m-b-lg">
+            <div class="g-recaptcha" data-sitekey="6LcAJS0UAAAAAKSXdRLCT4uj12iOCgNGRuOpOrSe" style="width:305px;display:block;margin:auto;"></div>
         </div>
+      </div>
+      </form>
       <div class="row">
         <div class="col-xs-12">
-          <button class="btn btn-orange">Envíar</button>
+          <button class="btn btn-orange" onclick="validar();">Envíar</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-5 m-t">
+          <?php
+           if (isset($_GET['res'])){
+              if ($_GET['res']=='ok'){ ?> <div class="alert alert-success" role="alert">Tu mensaje ha sido enviado con éxito. ¡En breve nos contactaremos contigo! </div> <?php }
+              if ($_GET['res']=='err'){ ?> <div class="alert alert-error" role="alert">Ha ocurrido un error al enviar tu mensaje, por favor intenta más tarde.</div> <?php }
+              if ($_GET['res']=='recap'){ ?> <div class="alert alert-error" role="alert">No ha pasado la validacion de Recaptcha.</div> <?php }
+           }
+          ?>
         </div>
       </div>
     </div>
 
-    </form>
+
     <div class="push"></div>
   </div>
 
@@ -165,5 +170,54 @@
   <script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
   <script src="js/index.js"></script>
+  <script type="text/javascript">
+    function seleccion(item)
+    {
+      document.getElementById('cargo').value = item;
+    }
+    function validar() {
+        //validar nombre
+        if (document.formulario.nombre.value.length==0) {
+            alert("Ingrese su nombre");
+            document.formulario.nombre.focus();
+            return 0;
+        }
+        //Validar telefono
+        if (document.formulario.telefono.value.length==0) {
+            alert("Ingrese su teléfono");
+            document.formulario.telefono.focus();
+            return 0;
+        }
+        //validar correo
+        if (document.formulario.email.value.length==0) {
+            alert("Ingrese su correo");
+            document.formulario.email.focus();
+            return 0;
+        }else{
+            var patron = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,10})$/;
+            if (!patron.test(document.formulario.email.value)) {
+                alert("Correo no válido por favor ingresar nuevamente");
+                document.formulario.email.focus();
+                return 0;
+            }
+        }
+        //Validar cargo
+        if (document.formulario.cargo.value.length==0) {
+            alert("Ingrese su cargo");
+            document.formulario.cargo.focus();
+            return 0;
+        }
+
+        //Validar perfil
+        if (document.formulario.perfil.value.length==0) {
+            alert("Ingrese su perfil");
+            document.formulario.perfil.focus();
+            return 0;
+        }
+
+        document.formulario.submit();
+    }
+
+  </script>
 </body>
 </html>
