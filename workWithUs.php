@@ -67,7 +67,7 @@
     </header>
 
     <!-- formulario contacto -->
-    <form action="enviarTrabaja.php" method="post" id="contactoTrabaja" enctype="multipart/form-data">
+    <form action="enviarTrabaja.php" method="POST" id="contactoTrabaja" enctype="multipart/form-data">
     <div class="container-fluid form-contacto">
       <div class="row">
         <div class="col-xs-12 col-md-6">
@@ -107,7 +107,7 @@
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <div class="material-form-field">
-            <input type="file" required name="cv[]" id="cv"/>
+            <input type="file" required name="archivo" id="cv"/>
             <label class="material-form-field-label" for="cv" style="top:0;">Adjuntar CV</label>
           </div>
         </div>
@@ -136,6 +136,8 @@
               if ($_GET['res']=='ok'){ ?> <div class="alert alert-success" role="alert">Tu mensaje ha sido enviado con éxito. ¡En breve nos contactaremos contigo! </div> <?php }
               if ($_GET['res']=='err'){ ?> <div class="alert alert-error" role="alert">Ha ocurrido un error al enviar tu mensaje, por favor intenta más tarde.</div> <?php }
               if ($_GET['res']=='recap'){ ?> <div class="alert alert-error" role="alert">No ha pasado la validacion de Recaptcha.</div> <?php }
+              if ($_GET['res']=='size'){ ?> <div class="alert alert-error" role="alert">El archivo no puede ser de mas de 5MB.</div> <?php }
+              if ($_GET['res']=='type'){ ?> <div class="alert alert-error" role="alert">El archivo debe ser formato .pdf o .docx.</div> <?php }
            }
           ?>
         </div>

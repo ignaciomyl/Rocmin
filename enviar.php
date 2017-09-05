@@ -55,9 +55,9 @@ $mail->SMTPAuth = true;
 //Definmos la seguridad como TLS
 $mail->SMTPSecure = 'ssl';
 //Username to use for SMTP authentication
-$mail->Username = "ignaciomyl@gmail.com"; // correo que va a enviar los mails
+$mail->Username = "correo@casilla.com"; // correo que va a enviar los mails
 //Password to use for SMTP authentication
-$mail->Password = "coleccionador";
+$mail->Password = "password";
 //Set who the message is to be sent from
 $mail->setFrom('camigolden@osom.digital'); // correo que va a enviar los mails
 //Set an alternative reply-to address

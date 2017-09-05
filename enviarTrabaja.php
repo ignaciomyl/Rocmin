@@ -23,89 +23,25 @@ $telefono = $_POST["telefono"];
 // $organizacion = $_POST["organizacion"];
 $perfil = $_POST["perfil"];
 $cargo = $_POST["cargo"];
+$archivo = $_FILES['archivo'];
+$validation_file = true;
+
 
 //echo $asunto2;
 
 $asunto .="Nueva solicitud de contacto";
 $mailing .="Se ha recibido una nueva solicitud de contacto de: ".$nombre." <br> Número de Contacto: ".$telefono. " <br> Email: ".$email."  <br> Cargo: ".$cargo."  <br> Perfil: ".$perfil." \n";
 
-
-//
-// if ($spam!=''){
-// 	echo "Eres un spam";
-// 	die();
-// }
-$dir = "uploads/$filename";
-chmod("uploads",0777);
-$attachments = array();
-//
-checkType();
-//
-//------Check TYPE------\\
-function checkType() {
-while(list($key,$value) = each($_FILES[cv][type])){
-strtolower($value);
-if($value != "application/msword" AND $value != "application/pdf" AND $value != "") {
-exit('Sorry , current format is <b>'.($value).'</b> ,only pdf or docx are allowed.') ;
-}
-}
-//
-checkSize();
-//
-}
-//-------END OF Check TYPE--------\\
-//
-//---CheckSizeFunction ---\\
-function checkSize(){
-while(list($key,$value) = each($_FILES[cv][size]))
+if($archivo['size'] > 5000000)
 {
-$maxSize = 5000000;
-if(!empty($value)){
-if ($value > $maxSize) {
-echo"Sorry this is a very big file .. max file size is $maxSize Bytes = 5 MB";
-exit();
+	header ("Location: ./workWithUs.php?res=size");
+	$validation_file = false;
 }
-else {
-$result = "File size is ok !<br>";
-//
-}
-//
-}
-//
-}
-uploadFile();
-//
-}
-//-------END OF Check Size--------\\
-//
-//==============upload File Function============\\
-//
-function uploadFile() {
-global $attachments;
-while(list($key,$value) = each($_FILES[cv][name]))
+if($archivo['type'] != "application/pdf" && $archivo['type'] !=  "application/vnd.openxmlformats-officedocument.wordprocessingml.document" )
 {
-//
-if(!empty($value))
-{
-$filename = $value;
-//the Array will be used later to attach the files and then remove them from server ! array_push($attachments, $filename);
-$dir = "uploads/$filename";
-chmod("uploads",0777);
-$success = copy($_FILES[cv][tmp_name][$key], $dir);
+	header ("Location: ./workWithUs.php?res=type");
+	$validation_file = false;
 }
-//
-}
-//
-if ($success) {
-echo " Files Uploaded Successfully<BR>";
-//
-}else {
-exit("Sorry the server was unable to upload the files...");
-}
-//
-}
-
-
 
 $mail = new PHPMailer;
 //Tell PHPMailer to use SMTP
@@ -118,6 +54,7 @@ $mail->SMTPDebug = 0;
 //Ask for HTML-friendly debug output
 $mail->Debugoutput = 'html';
 //Set the hostname of the mail server
+$mail->IsHTML(true);
 $mail->Host = "smtp.gmail.com";
 //Set the SMTP port number - likely to be 25, 465 or 587
 $mail->Port = 465;
@@ -126,9 +63,9 @@ $mail->SMTPAuth = true;
 //Definmos la seguridad como TLS
 $mail->SMTPSecure = 'ssl';
 //Username to use for SMTP authentication
-$mail->Username = "ignaciomyl@gmail.com"; // correo que va a enviar los mails
+$mail->Username = "correo@casilla.com"; // correo que va a enviar los mails
 //Password to use for SMTP authentication
-$mail->Password = "coleccionador";
+$mail->Password = "password";
 //Set who the message is to be sent from
 $mail->setFrom('camigolden@osom.digital'); // correo que va a enviar los mails
 //Set an alternative reply-to address
@@ -143,25 +80,30 @@ $mail->msgHTML('<html><body>'.$mailing.'</body></html>');
 //Replace the plain text body with one created manually
 $mail->AltBody = 'Se ha recibido una nueva solicitud de contacto de: ".$nombre." Número de Contacto: ".$telefono. " Email: ".$email. " Perfil: ".$perfil';
 //now Attach all files submitted
-foreach($attachments as $key => $value) { //loop the Attachments to be added ...
-$mail->AddAttachment("uploads"."/".$value);
-}
+//loop the Attachments to be added ...
+$mail->AddAttachment($archivo['tmp_name'], $archivo['name']);
 
-//send the message, check for errors
-if($recapValidation)
+if($validation_file)
 {
-	// echo "eso mismo idiota";
-	if (!$mail->send()) {
-		ob_end_clean();
-		header ("Location: ./contact.php?res=err");
-	    //echo "Mailer Error: " . $mail->ErrorInfo;
-	} else {
-		ob_end_clean();
-	    header ("Location: ./contact.php?res=ok");
+//send the message, check for errors
+	if($recapValidation)
+	{
+		if (!$mail->send()) {
+			ob_end_clean();
+			header ("Location: ./workWithUs.php?res=err");
+		    // echo "Mailer Error: " . $mail->ErrorInfo;
+		} else {
+			ob_end_clean();
+		    header ("Location: ./workWithUs.php?res=ok");
+			// echo $archivo['name'];
+		}
+	}
+	else {
+		header ("Location: ./workWithUs.php?res=recap");
+		// echo "eso no es idiota";
 	}
 }
-else {
-	header ("Location: ./contact.php?res=recap");
-	// echo "eso no es idiota";
-}
+
+
+
 ?>
